@@ -60,11 +60,13 @@ flyctl launch
 ### 3.4 Добавить переменные окружения
 
 ```bash
-flyctl secrets set TELEGRAM_BOT_TOKEN="7968828839:AAHtKAIg4d2rM8u6mn8W_NJhSAfMDtHXKU8"
-flyctl secrets set GROQ_API_KEY="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"
-flyctl secrets set OPENROUTER_API_KEY="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"
+flyctl secrets set TELEGRAM_BOT_TOKEN="ваш_токен_бота"
+flyctl secrets set GROQ_API_KEY="ваш_groq_ключ"
+flyctl secrets set OPENROUTER_API_KEY="ваш_openrouter_ключ"
 flyctl secrets set ALLOWED_ORIGINS="*"
 ```
+
+Замените значения на ваши реальные ключи из .env файла!
 
 ### 3.5 Задеплоить
 
