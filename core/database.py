@@ -738,3 +738,53 @@ class Database:
             async with db.execute("SELECT COUNT(*) FROM typical_dishes") as cursor:
                 row = await cursor.fetchone()
                 return row[0] if row else 0
+
+    async def get_meal_by_id(self, meal_id: int) -> Optional[Dict[str, Any]]:
+        """Get meal by ID"""
+        async with aiosqlite.connect(self.db_path) as db:
+            db.row_factory = aiosqlite.Row
+            async with db.execute(
+                "SELECT * FROM meals WHERE meal_id = ?",
+                (meal_id,)
+            ) as cursor:
+                row = await cursor.fetchone()
+                return dict(row) if row else None
+    
+    async def update_meal(self, meal_id: int, **kwargs) -> bool:
+        """Update meal fields"""
+        if not kwargs:
+            return False
+        
+        # Convert dict/list fields to JSON
+        if 'components' in kwargs and kwargs['components'] is not None:
+            kwargs['components'] = json.dumps(kwargs['components'], ensure_ascii=False)
+        
+        fields = ", ".join(f"{k} = ?" for k in kwargs.keys())
+        values = list(kwargs.values()) + [meal_id]
+        
+        async with aiosqlite.connect(self.db_path) as db:
+            await db.execute(
+                f"UPDATE meals SET {fields} WHERE meal_id = ?",
+                values
+            )
+            await db.commit()
+        
+        logger.info(f"Meal {meal_id} updated")
+        return True
+    
+    async def delete_meal(self, meal_id: int) -> bool:
+        """Delete meal by ID"""
+        async with aiosqlite.connect(self.db_path) as db:
+            cursor = await db.execute(
+                "DELETE FROM meals WHERE meal_id = ?",
+                (meal_id,)
+            )
+            await db.commit()
+            deleted = cursor.rowcount > 0
+        
+        if deleted:
+            logger.info(f"Meal {meal_id} deleted")
+        else:
+            logger.warning(f"Meal {meal_id} not found for deletion")
+        
+        return deleted

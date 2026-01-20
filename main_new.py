@@ -28,11 +28,13 @@ from handlers.commands import (
     setup_command,
     today_command,
     meals_command,
-    cancel_command
+    cancel_command,
+    analyze_video_command
 )
 from handlers.registration import handle_registration
 from handlers.callbacks import handle_callback_query
 from handlers.photos import handle_photo_message
+from handlers.video_notes import handle_video_note
 from handlers.corrections import handle_correction_text
 from handlers.meal_confirmation import confirm_and_save_meal
 
@@ -140,8 +142,10 @@ def main():
         application.add_handler(CommandHandler("today", today_command))
         application.add_handler(CommandHandler("meals", meals_command))
         application.add_handler(CommandHandler("cancel", cancel_command))
+        application.add_handler(CommandHandler("analyze_video", analyze_video_command))
         
         # Register message handlers
+        application.add_handler(MessageHandler(filters.VIDEO_NOTE, handle_video_note))
         application.add_handler(MessageHandler(filters.PHOTO, handle_photo_message))
         application.add_handler(MessageHandler(
             filters.TEXT & ~filters.COMMAND,

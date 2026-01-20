@@ -193,3 +193,32 @@ async def cancel_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
     
     logger.info(f"User {user_id} cancelled action")
+
+
+async def analyze_video_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Handle /analyze_video command - start video note analysis"""
+    user_id = update.effective_user.id
+    user_manager = context.bot_data['user_manager']
+    
+    # Check if user is registered
+    is_registered = await user_manager.is_registered(user_id)
+    
+    if not is_registered:
+        await update.message.reply_text(
+            config.MESSAGES['error_no_profile'],
+            parse_mode=ParseMode.MARKDOWN
+        )
+        return
+    
+    # Send instructions
+    await update.message.reply_text(
+        "🎥 *Режим анализа видео-кружка*\n\n"
+        "Запиши видео-кружок (до 60 сек), где:\n"
+        "1️⃣ Покажи еду со всех сторон\n"
+        "2️⃣ Расскажи, что это и примерный вес\n\n"
+        "Я сделаю скриншоты и учту твой голос! 🎤\n\n"
+        "_Просто нажми на кнопку видео-кружка в Telegram и запиши видео._",
+        parse_mode=ParseMode.MARKDOWN
+    )
+    
+    logger.info(f"User {user_id} requested video analysis")

@@ -10,6 +10,9 @@ aiohttp==3.11.11
 # Image Processing
 Pillow==11.1.0
 
+# Video Processing
+opencv-python==4.8.1.78
+
 # Environment Variables
 python-dotenv==1.0.1
 

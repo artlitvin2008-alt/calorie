@@ -17,6 +17,10 @@ OPENROUTER_API_KEY = os.getenv('OPENROUTER_API_KEY')
 if not OPENROUTER_API_KEY:
     raise ValueError("OPENROUTER_API_KEY not found in .env file")
 
+# Groq API Key (for audio transcription)
+GROQ_API_KEY = os.getenv('GROQ_API_KEY')
+# Optional - if not set, audio transcription will be skipped
+
 # OpenRouter settings
 OPENROUTER_API_URL = "https://openrouter.ai/api/v1/chat/completions"
 MODEL_NAME = "qwen/qwen-2-vl-7b-instruct:free"

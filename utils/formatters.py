@@ -503,3 +503,62 @@ def format_dish_comparison(
         message += "✅ **Реалистичность анализа:** Высокая. Данные соответствуют типичным значениям.\n"
     
     return message
+
+
+def format_video_note_analysis(analysis: Dict[str, Any]) -> str:
+    """Format video note analysis with transcription indicator"""
+    components = analysis.get('components', [])
+    
+    if not components:
+        return "❌ Не удалось распознать компоненты блюда"
+    
+    # Header with video indicator
+    dish_name = analysis.get('dish_name', 'Блюдо')
+    message = f"🎥 **Анализ видео-кружка**\n\n"
+    
+    # Transcription indicator
+    transcription = analysis.get('audio_transcription', '')
+    transcription_used = analysis.get('transcription_used', False)
+    
+    if transcription and transcription_used:
+        message += f"🎤 _Учтена голосовая информация:_\n"
+        message += f"_{transcription}_\n\n"
+    elif not transcription:
+        message += f"ℹ️ _Анализ только по видео (без голоса)_\n\n"
+    
+    message += f"🍽️ **{dish_name}**\n\n"
+    
+    # Components with detailed info
+    message += "**Компоненты:**\n\n"
+    
+    for i, comp in enumerate(components, 1):
+        message += format_component_detailed(comp, i) + "\n\n"
+    
+    # Separator
+    message += create_separator() + "\n"
+    
+    # Totals
+    message += format_totals_summary(analysis) + "\n"
+    
+    # Calorie density indicator
+    calories_per_100g = analysis.get('calories_per_100g', 0)
+    if calories_per_100g > 0:
+        message += f"\n{format_calorie_density_indicator(calories_per_100g)}\n"
+    
+    # Health score if available
+    health_score = analysis.get('health_score')
+    if health_score:
+        message += f"\n⭐ Полезность: {format_health_score_visual(health_score)}\n"
+    
+    # Show warnings if any
+    warnings = analysis.get('warnings', [])
+    if warnings:
+        message += f"\n{format_warnings_list(warnings)}\n"
+    
+    # Separator
+    message += f"\n{create_separator()}\n"
+    
+    # Instructions
+    message += format_instructions()
+    
+    return message

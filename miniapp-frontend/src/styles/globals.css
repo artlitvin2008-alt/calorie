@@ -1,0 +1,64 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  
+  body {
+    @apply bg-background-light dark:bg-background-dark text-text-primary-light dark:text-text-primary-dark;
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', 'Roboto', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* iOS-style scrollbar */
+  ::-webkit-scrollbar {
+    width: 0px;
+    background: transparent;
+  }
+
+  /* Disable text selection on iOS */
+  * {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+  }
+
+  /* Allow text selection in inputs */
+  input, textarea {
+    -webkit-user-select: text;
+    user-select: text;
+  }
+}
+
+@layer components {
+  /* iOS-style card */
+  .ios-card {
+    @apply bg-surface-light dark:bg-surface-dark rounded-ios shadow-ios;
+  }
+
+  /* iOS-style button */
+  .ios-button {
+    @apply px-4 py-2 rounded-ios font-medium transition-all active:scale-95;
+  }
+
+  .ios-button-primary {
+    @apply ios-button bg-primary text-white hover:bg-primary/90;
+  }
+
+  .ios-button-secondary {
+    @apply ios-button bg-surface-light dark:bg-surface-dark text-text-primary-light dark:text-text-primary-dark;
+  }
+
+  /* iOS-style input */
+  .ios-input {
+    @apply w-full px-4 py-3 rounded-ios bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-primary;
+  }
+
+  /* iOS-style list item */
+  .ios-list-item {
+    @apply flex items-center justify-between px-4 py-3 bg-surface-light dark:bg-surface-dark border-b border-gray-200 dark:border-gray-700 last:border-b-0;
+  }
+}
