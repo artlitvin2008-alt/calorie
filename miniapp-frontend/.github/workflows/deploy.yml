@@ -31,7 +31,7 @@ jobs:
           cd miniapp-frontend
           npm run build
         env:
-          VITE_API_URL: https://demo-api.example.com/api
+          VITE_API_URL: http://185.207.66.237/api
           
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
